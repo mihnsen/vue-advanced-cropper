@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import Cropper from './Cropper.vue';
 
 import { RectangleStencil, CircleStencil } from './components/stencils';
@@ -28,9 +27,3 @@ export { Preview } from './components/helpers';
 export { ResizeEvent, MoveEvent, DragEvent } from './core/events';
 
 export { default as Cropper } from './Cropper.vue';
-
-Vue.component('cropper', Cropper);
-Vue.component('rectangle-stencil', RectangleStencil);
-Vue.component('circle-stencil', CircleStencil);
-Vue.component('simple-handler', SimpleHandler);
-Vue.component('simple-line', SimpleLine);
