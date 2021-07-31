@@ -5,7 +5,7 @@
 	"author": "Norserium",
 	"license": "MIT",
 	"repository": "Norserium/vue-advanced-cropper",
-	"main": "src/index.js",
+	"main": "dist/index.js",
 	"umd": "dist/index.umd.js",
 	"module": "dist/index.es.js",
 	"jsnext:main": "dist/index.es.js",
