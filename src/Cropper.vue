@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import bem from 'easy-bem';
 import debounce from 'debounce';
 import { RectangleStencil } from './components/stencils';
-import { CropperWrapper } from './components/service';
+import { BackgroundWrapper } from './components/service';
 import {
 	fillBoundaries,
 	fitBoundaries,
@@ -16,14 +16,20 @@ import {
 	isObject,
 	limitBy,
 	radians,
-	replacedProp,
 } from './core';
 import { approximatedSize } from './core/algorithms';
 import { updateCanvas } from './core/canvas';
 import { ManipulateImageEvent } from './core/events';
 import { isEqual, limitSizeRestrictions, limitsToSize, ratio } from './core/service';
-import { isLocal, isCrossOriginURL, isUndefined, getSettings, parseNumber } from './core/utils';
-import { arrayBufferToDataURL, getImageTransforms, getStyleTransforms, prepareSource, parseImage } from './core/image';
+import { isLocal, isCrossOriginURL, isUndefined, parseNumber } from './core/utils';
+import {
+	arrayBufferToDataURL,
+	getImageTransforms,
+	getStyleTransforms,
+	prepareSource,
+	parseImage,
+	fillImageTransforms,
+} from './core/image';
 import { IMAGE_RESTRICTIONS, DEFAULT_COORDINATES } from './core/constants';
 import * as algorithms from './core/algorithms';
 
@@ -32,7 +38,7 @@ const cn = bem('vue-advanced-cropper');
 export default {
 	name: 'Cropper',
 	components: {
-		CropperWrapper,
+		BackgroundWrapper,
 	},
 	props: {
 		src: {
@@ -43,6 +49,12 @@ export default {
 			type: [Object, String],
 			default() {
 				return RectangleStencil;
+			},
+		},
+		backgroundWrapperComponent: {
+			type: [Object, String],
+			default() {
+				return BackgroundWrapper;
 			},
 		},
 		stencilProps: {
@@ -125,6 +137,9 @@ export default {
 			type: [Function, Object],
 			default: algorithms.defaultVisibleArea,
 		},
+		defaultTransforms: {
+			type: [Function, Object],
+		},
 		defaultBoundaries: {
 			type: [Function, String],
 			validator(value) {
@@ -189,15 +204,6 @@ export default {
 			type: Function,
 			default: algorithms.positionRestrictions,
 		},
-		maxCanvasSize: {
-			type: Number,
-			validator(value) {
-				if (!isUndefined(value) && process.env.NODE_ENV !== 'production') {
-					console.warn(`Warning: prop "maxCanvasSize" is deprecated now.`);
-				}
-				return true;
-			},
-		},
 	},
 	data() {
 		return {
@@ -209,14 +215,14 @@ export default {
 				crossOrigin: false,
 				src: null,
 			},
-			customImageTransforms: {
+			defaultImageTransforms: {
 				rotate: 0,
 				flip: {
 					horizontal: false,
 					vertical: false,
 				},
 			},
-			basicImageTransforms: {
+			appliedImageTransforms: {
 				rotate: 0,
 				flip: {
 					horizontal: false,
@@ -244,14 +250,10 @@ export default {
 		},
 		imageTransforms() {
 			return {
-				rotate: this.basicImageTransforms.rotate + this.customImageTransforms.rotate,
+				rotate: this.appliedImageTransforms.rotate,
 				flip: {
-					horizontal: Boolean(
-						this.basicImageTransforms.flip.horizontal ^ this.customImageTransforms.flip.horizontal,
-					),
-					vertical: Boolean(
-						this.basicImageTransforms.flip.vertical ^ this.customImageTransforms.flip.vertical,
-					),
+					horizontal: this.appliedImageTransforms.flip.horizontal,
+					vertical: this.appliedImageTransforms.flip.vertical,
 				},
 				translateX: this.visibleArea ? this.visibleArea.left / this.coefficient : 0,
 				translateY: this.visibleArea ? this.visibleArea.top / this.coefficient : 0,
@@ -930,6 +932,13 @@ export default {
 			});
 		},
 		resetVisibleArea() {
+			// Reset the applied image transforms first to recalculate the image size correctly
+			this.appliedImageTransforms = {
+				...this.defaultImageTransforms,
+				flip: {
+					...this.defaultImageTransforms.flip,
+				},
+			};
 			return this.updateBoundaries()
 				.then(() => {
 					if (this.priority !== 'visible-area') {
@@ -1053,8 +1062,8 @@ export default {
 				URL.revokeObjectURL(this.imageAttributes.src);
 			}
 			this.imageAttributes.revoke = false;
-			if (arrayBuffer && orientation && orientation > 1 && isLocal(source)) {
-				if (isBlob(source)) {
+			if (arrayBuffer && orientation && orientation > 1) {
+				if (isBlob(source) || !isLocal(source)) {
 					this.imageAttributes.src = URL.createObjectURL(new Blob([arrayBuffer]));
 					this.imageAttributes.revoke = true;
 				} else {
@@ -1063,17 +1072,22 @@ export default {
 			} else {
 				this.imageAttributes.src = source;
 			}
-			this.customImageTransforms = {
-				rotate: 0,
+
+			if (isFunction(this.defaultTransforms)) {
+				this.appliedImageTransforms = fillImageTransforms(this.defaultTransforms());
+			} else if (isObject(this.defaultTransforms)) {
+				this.appliedImageTransforms = fillImageTransforms(this.defaultTransforms);
+			} else {
+				this.appliedImageTransforms = getImageTransforms(orientation);
+			}
+
+			this.defaultImageTransforms = {
+				...this.appliedImageTransforms,
 				flip: {
-					horizontal: false,
-					vertical: false,
+					...this.appliedImageTransforms.flip,
 				},
 			};
-			this.basicImageTransforms = {
-				...this.customImageTransforms,
-				...getImageTransforms(orientation),
-			};
+
 			this.$nextTick(() => {
 				const image = this.$refs.image;
 				if (image && image.complete) {
@@ -1264,10 +1278,10 @@ export default {
 				});
 
 				if (horizontal) {
-					this.customImageTransforms.flip.horizontal = !this.customImageTransforms.flip.horizontal;
+					this.appliedImageTransforms.flip.horizontal = !this.appliedImageTransforms.flip.horizontal;
 				}
 				if (vertical) {
-					this.customImageTransforms.flip.vertical = !this.customImageTransforms.flip.vertical;
+					this.appliedImageTransforms.flip.vertical = !this.appliedImageTransforms.flip.vertical;
 				}
 
 				this.visibleArea = visibleArea;
@@ -1288,7 +1302,7 @@ export default {
 				}
 				const previousImageSize = { ...this.imageSize };
 
-				this.customImageTransforms.rotate += angle;
+				this.appliedImageTransforms.rotate += angle;
 				let { visibleArea, coordinates } = algorithms.rotateImage({
 					visibleArea: this.visibleArea,
 					coordinates: this.coordinates,
@@ -1322,7 +1336,8 @@ export default {
 		<div ref="stretcher" :class="classes.stretcher" />
 
 		<div :class="classes.boundaries" :style="boundariesStyle">
-			<cropper-wrapper
+			<component
+				:is="backgroundWrapperComponent"
 				:class="classes.cropperWrapper"
 				:wheel-resize="settings.resizeImage.wheel"
 				:touch-resize="settings.resizeImage.touch"
@@ -1359,7 +1374,7 @@ export default {
 				/>
 				<canvas v-if="canvas" ref="canvas" :style="{ display: 'none' }" />
 				<canvas v-if="canvas" ref="sourceCanvas" :style="{ display: 'none' }" />
-			</cropper-wrapper>
+			</component>
 		</div>
 	</div>
 </template>

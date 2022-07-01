@@ -14,6 +14,8 @@ export {
 	HandlerWrapper,
 	DraggableElement,
 	StencilPreview,
+	TransformableImage,
+	BackgroundWrapper,
 } from './components/service';
 
 export { RectangleStencil, CircleStencil } from './components/stencils';

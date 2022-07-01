@@ -17,7 +17,7 @@ export default {
 	data() {
 		return {
 			img:
-				'https://images.unsplash.com/photo-1590291409749-452efbe0d76c?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
+				require('../assets/pictures/photo-1623432532623-f8f1347d954c.jpg'),
 			result: {
 				coordinates: null,
 				image: null,
@@ -26,7 +26,7 @@ export default {
 	},
 	methods: {
 		flip(x, y) {
-			if (this.$refs.cropper.customImageTransforms.rotate % 180 !== 0) {
+			if (this.$refs.cropper.imageTransforms.rotate % 180 !== 0) {
 				this.$refs.cropper.flip(!x, !y);
 			} else {
 				this.$refs.cropper.flip(x, y);
