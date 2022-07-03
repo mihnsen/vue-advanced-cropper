@@ -159,6 +159,7 @@ export default {
 
 <template>
 	<div :class="classes.stencil" :style="style">
+		<slot />
 		<bounding-box
 			:width="stencilCoordinates.width"
 			:height="stencilCoordinates.height"
