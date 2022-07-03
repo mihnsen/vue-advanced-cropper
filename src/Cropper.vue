@@ -1372,6 +1372,7 @@ export default {
 					@move="onMove"
 					@move-end="onMoveEnd"
 				/>
+				<slot name="stencil-content"></slot>
 				<canvas v-if="canvas" ref="canvas" :style="{ display: 'none' }" />
 				<canvas v-if="canvas" ref="sourceCanvas" :style="{ display: 'none' }" />
 			</component>

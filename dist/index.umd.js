@@ -2878,13 +2878,15 @@
 											),
 										),
 										t._v(' '),
+										t._t('stencil-content'),
+										t._v(' '),
 										t.canvas ? i('canvas', { ref: 'canvas', style: { display: 'none' } }) : t._e(),
 										t._v(' '),
 										t.canvas
 											? i('canvas', { ref: 'sourceCanvas', style: { display: 'none' } })
 											: t._e(),
 									],
-									1,
+									2,
 								),
 							],
 							1,

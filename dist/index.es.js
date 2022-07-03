@@ -611,8 +611,8 @@ var W = E(
 	D = ['top', 'bottom'],
 	L = ['left', 'top'],
 	I = ['fill-area', 'fit-area', 'stencil', 'none'],
-	B = { left: 0, top: 0, width: 0, height: 0 };
-function _(t, e, i) {
+	_ = { left: 0, top: 0, width: 0, height: 0 };
+function B(t, e, i) {
 	return !(i = i || ['width', 'height', 'left', 'top']).some(function (i) {
 		return t[i] !== e[i];
 	});
@@ -1841,7 +1841,7 @@ function It(t) {
 		(o += ' scaleY(' + s * (i.vertical ? -1 : 1) + ') ')
 	);
 }
-function Bt(t) {
+function _t(t) {
 	try {
 		var e,
 			i = new DataView(t),
@@ -1887,7 +1887,7 @@ function Bt(t) {
 		return null;
 	}
 }
-var _t = c('vue-preview-result'),
+var Bt = c('vue-preview-result'),
 	Ft = E(
 		{
 			render: function () {
@@ -1924,10 +1924,10 @@ var _t = c('vue-preview-result'),
 			computed: {
 				classes: function () {
 					return {
-						root: _t(),
-						wrapper: _t('wrapper'),
-						imageWrapper: _t('image-wrapper'),
-						image: h(_t('image'), this.imageClass),
+						root: Bt(),
+						wrapper: Bt('wrapper'),
+						imageWrapper: Bt('image-wrapper'),
+						image: h(Bt('image'), this.imageClass),
 					};
 				},
 				wrapperStyle: function () {
@@ -2844,13 +2844,15 @@ var Kt = ['transitions'],
 										),
 									),
 									t._v(' '),
+									t._t('stencil-content'),
+									t._v(' '),
 									t.canvas ? i('canvas', { ref: 'canvas', style: { display: 'none' } }) : t._e(),
 									t._v(' '),
 									t.canvas
 										? i('canvas', { ref: 'sourceCanvas', style: { display: 'none' } })
 										: t._e(),
 								],
-								1,
+								2,
 							),
 						],
 						1,
@@ -3185,7 +3187,7 @@ var Kt = ['transitions'],
 					appliedImageTransforms: { rotate: 0, flip: { horizontal: !1, vertical: !1 } },
 					boundaries: { width: 0, height: 0 },
 					visibleArea: null,
-					coordinates: e({}, B),
+					coordinates: e({}, _),
 				};
 			},
 			computed: {
@@ -3596,7 +3598,7 @@ var Kt = ['transitions'],
 						sizeRestrictions: this.sizeRestrictions,
 						stencilSize: this.getStencilSize(),
 					});
-					return e(e({}, r), {}, { changed: !_(r.visibleArea, i) || !_(r.coordinates, n) });
+					return e(e({}, r), {}, { changed: !B(r.visibleArea, i) || !B(r.coordinates, n) });
 				},
 				runAutoZoom: function (t) {
 					var e = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
@@ -3968,7 +3970,7 @@ var Kt = ['transitions'],
 								new Promise(function (e) {
 									Lt(t)
 										.then(function (i) {
-											var n = Bt(i);
+											var n = _t(i);
 											e(
 												i
 													? { source: t, arrayBuffer: i, orientation: n }
@@ -4246,7 +4248,7 @@ var Kt = ['transitions'],
 					};
 				},
 				defaultCoordinates: function () {
-					return e({}, B);
+					return e({}, _);
 				},
 				flip: function (t, i) {
 					var n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {},
