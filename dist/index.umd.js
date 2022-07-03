@@ -225,10 +225,10 @@
 			})(t)
 		);
 	}
-	function g(t) {
+	function p(t) {
 		return !!(t && t.constructor && t.call && t.apply);
 	}
-	function p(t) {
+	function g(t) {
 		return void 0 === t;
 	}
 	function v(t) {
@@ -238,7 +238,7 @@
 		var n = {};
 		return v(t)
 			? (Object.keys(e).forEach(function (s) {
-					p(t[s])
+					g(t[s])
 						? (n[s] = e[s])
 						: v(e[s])
 						? v(t[s])
@@ -518,7 +518,6 @@
 								'DraggableElement',
 								{
 									class: t.classes.draggable,
-									attrs: { disabled: t.disabled },
 									on: {
 										drag: function (e) {
 											return t.$emit('drag', e);
@@ -573,7 +572,7 @@
 			void 0,
 		),
 		O = h('vue-line-wrapper'),
-		H = C(
+		$ = C(
 			{
 				render: function () {
 					var t = this,
@@ -582,7 +581,6 @@
 						'DraggableElement',
 						{
 							class: t.classname,
-							attrs: { disabled: t.disabled },
 							on: {
 								drag: function (e) {
 									return t.$emit('drag', e);
@@ -624,18 +622,18 @@
 			void 0,
 			void 0,
 		),
-		$ = ['left', 'right', 'top', 'bottom'],
+		H = ['left', 'right', 'top', 'bottom'],
 		j = ['left', 'right'],
-		D = ['top', 'bottom'],
-		P = ['left', 'top'],
+		P = ['top', 'bottom'],
+		D = ['left', 'top'],
 		L = ['fill-area', 'fit-area', 'stencil', 'none'],
 		I = { left: 0, top: 0, width: 0, height: 0 };
-	function B(t, e, i) {
+	function _(t, e, i) {
 		return !(i = i || ['width', 'height', 'left', 'top']).some(function (i) {
 			return t[i] !== e[i];
 		});
 	}
-	function _(t) {
+	function B(t) {
 		return { left: t.left, top: t.top, right: t.left + t.width, bottom: t.top + t.height };
 	}
 	function F(t, e) {
@@ -647,9 +645,9 @@
 	function Y(t, e) {
 		var i = { left: 0, top: 0, right: 0, bottom: 0 };
 		return (
-			$.forEach(function (n) {
+			H.forEach(function (n) {
 				var s = e[n],
-					o = _(t)[n];
+					o = B(t)[n];
 				i[n] =
 					void 0 !== s && void 0 !== o
 						? 'left' === n || 'top' === n
@@ -694,10 +692,10 @@
 		}
 		return t;
 	}
-	function V(t) {
+	function q(t) {
 		return t.width / t.height;
 	}
-	function q(t, e) {
+	function V(t, e) {
 		return Math.min(
 			void 0 !== e.right && void 0 !== e.left ? (e.right - e.left) / t.width : 1 / 0,
 			void 0 !== e.bottom && void 0 !== e.top ? (e.bottom - e.top) / t.height : 1 / 0,
@@ -717,8 +715,8 @@
 		return e.minimum && t < e.minimum ? (i = e.minimum) : e.maximum && t > e.maximum && (i = e.maximum), i;
 	}
 	function K(t, e) {
-		var i = V(t),
-			n = V(e);
+		var i = q(t),
+			n = q(e);
 		return e.width < 1 / 0 && e.height < 1 / 0
 			? i > n
 				? { width: e.width, height: e.width / i }
@@ -744,8 +742,8 @@
 		var i = Y(it(t, e), e);
 		return i.left + i.right + i.top + i.bottom
 			? i.left + i.right > i.top + i.bottom
-				? Math.min((t.width + i.left + i.right) / t.width, q(t, e))
-				: Math.min((t.height + i.top + i.bottom) / t.height, q(t, e))
+				? Math.min((t.width + i.left + i.right) / t.width, V(t, e))
+				: Math.min((t.height + i.top + i.bottom) / t.height, V(t, e))
 			: 1;
 	}
 	function it(t, e, i) {
@@ -771,7 +769,7 @@
 		void 0 === i && (i = !0);
 		var n = {};
 		return (
-			$.forEach(function (s) {
+			H.forEach(function (s) {
 				var o = t[s],
 					r = e[s];
 				void 0 !== o && void 0 !== r
@@ -799,7 +797,7 @@
 			n = t.ignoreMinimum,
 			s = t.sizeRestrictions;
 		return Boolean(
-			(e.correctRatio || (V(e) >= i.minimum && V(e) <= i.maximum)) &&
+			(e.correctRatio || (q(e) >= i.minimum && q(e) <= i.maximum)) &&
 				e.height <= s.maxHeight &&
 				e.width <= s.maxWidth &&
 				e.width &&
@@ -873,8 +871,8 @@
 		return (
 			(Array.isArray(i) ? i : [i]).forEach(function (t) {
 				var e = {};
-				(p((e = 'function' == typeof t ? t({ coordinates: c, imageSize: n, visibleArea: a }) : t).width) &&
-					p(e.height)) ||
+				(g((e = 'function' == typeof t ? t({ coordinates: c, imageSize: n, visibleArea: a }) : t).width) &&
+					g(e.height)) ||
 					(c = (function (t, e) {
 						var i = d(
 							d(d({}, t), ct({ width: e.width, height: e.height, sizeRestrictions: s, aspectRatio: r })),
@@ -882,7 +880,7 @@
 						);
 						return h(i, { left: t.left, top: t.top });
 					})(c, d(d({}, c), e))),
-					(p(e.left) && p(e.top)) || (c = h(c, d(d({}, c), e)));
+					(g(e.left) && g(e.top)) || (c = h(c, d(d({}, c), e)));
 			}),
 			c
 		);
@@ -904,8 +902,8 @@
 			u = d({}, n),
 			m = d({}, s),
 			f = d({}, o);
-		(h = V(f)),
-			(c = V(u)),
+		(h = q(f)),
+			(c = q(u)),
 			void 0 === l && (l = 0.001),
 			(0 === h || 0 === c ? Math.abs(c - h) < l : Math.abs(c / h) < 1 + l && Math.abs(c / h) > 1 - l) ||
 				(u = d(
@@ -914,14 +912,14 @@
 						sizeRestrictions: r,
 						width: u.width,
 						height: u.height,
-						aspectRatio: { minimum: V(f), maximum: V(f) },
+						aspectRatio: { minimum: q(f), maximum: q(f) },
 					}),
 				));
-		var g = et((m = Z(m, (u.width * i.width) / (m.width * f.width))), e({ visibleArea: m, type: 'resize' }));
+		var p = et((m = Z(m, (u.width * i.width) / (m.width * f.width))), e({ visibleArea: m, type: 'resize' }));
 		return (
-			1 !== g && ((m = Z(m, g)), (u = Z(u, g))),
+			1 !== p && ((m = Z(m, p)), (u = Z(u, p))),
 			(m = it((m = N(m, F(X(u), X(m)))), e({ visibleArea: m, type: 'move' }))),
-			{ coordinates: (u = it(u, rt(_(m), a))), visibleArea: m }
+			{ coordinates: (u = it(u, rt(B(m), a))), visibleArea: m }
 		);
 	}
 	function mt(t) {
@@ -939,14 +937,14 @@
 			var c = { width: 0, height: 0 };
 			h.width,
 				n.width,
-				V(n) > V(a)
-					? ((c.height = 0.8 * n.height), (c.width = c.height * V(a)))
-					: ((c.width = 0.8 * n.width), (c.height = c.width * V(a)));
+				q(n) > q(a)
+					? ((c.height = 0.8 * n.height), (c.width = c.height * q(a)))
+					: ((c.width = 0.8 * n.width), (c.height = c.width * q(a)));
 			var l = et((h = Z(h, (a.width * n.width) / (h.width * c.width))), i({ visibleArea: h, type: 'resize' }));
 			(h = Z(h, l)),
 				1 !== l && ((c.height /= l), (c.width /= l)),
 				(h = it((h = N(h, F(X(a), X(h)))), i({ visibleArea: h, type: 'move' }))),
-				(a = it(a, rt(_(h), r)));
+				(a = it(a, rt(B(h), r)));
 		}
 		return { coordinates: a, visibleArea: h };
 	}
@@ -961,26 +959,26 @@
 			var a = Math.max(0, r.width - o.width),
 				h = Math.max(0, r.height - o.height);
 			a > h
-				? (o = Z(o, Math.min(r.width / o.width, q(o, s({ visibleArea: o, type: 'resize' })))))
-				: h > a && (o = Z(o, Math.min(r.height / o.height, q(o, s({ visibleArea: o, type: 'resize' }))))),
-				(o = it((o = N(o, U(G(r, _(o))))), s({ visibleArea: o, type: 'move' })));
+				? (o = Z(o, Math.min(r.width / o.width, V(o, s({ visibleArea: o, type: 'resize' })))))
+				: h > a && (o = Z(o, Math.min(r.height / o.height, V(o, s({ visibleArea: o, type: 'resize' }))))),
+				(o = it((o = N(o, U(G(r, B(o))))), s({ visibleArea: o, type: 'move' })));
 		}
 		return { visibleArea: o, coordinates: r };
 	}
-	function gt(t) {
+	function pt(t) {
 		var e = t.imageSize,
 			i = t.visibleArea,
 			n = t.aspectRatio,
 			s = t.sizeRestrictions,
 			o = i || e,
-			r = Math.min(n.maximum || 1 / 0, Math.max(n.minimum || 0, V(o))),
+			r = Math.min(n.maximum || 1 / 0, Math.max(n.minimum || 0, q(o))),
 			a =
 				o.width < o.height
 					? { width: 0.8 * o.width, height: (0.8 * o.width) / r }
 					: { height: 0.8 * o.height, width: 0.8 * o.height * r };
 		return ct(d(d({}, a), { aspectRatio: n, sizeRestrictions: s }));
 	}
-	function pt(t) {
+	function gt(t) {
 		var e,
 			i,
 			n = t.imageSize,
@@ -991,14 +989,14 @@
 			h = t.stencilSize,
 			c = s || n;
 		return (
-			V(c) > V(o)
-				? (i = (e = (h.height * c.height) / o.height) * V(h))
-				: (e = (i = (h.width * c.width) / o.width) / V(h)),
+			q(c) > q(o)
+				? (i = (e = (h.height * c.height) / o.height) * q(h))
+				: (e = (i = (h.width * c.width) / o.width) / q(h)),
 			ct({ width: i, height: e, aspectRatio: r, sizeRestrictions: a })
 		);
 	}
 	function vt(t, e) {
-		return ot(t, _(e));
+		return ot(t, B(e));
 	}
 	function bt(t) {
 		var e = t.event,
@@ -1014,24 +1012,24 @@
 			u = d({}, i),
 			m = 1,
 			f = 1,
-			g = h.factor && Math.abs(h.factor - 1) > 0.001;
+			p = h.factor && Math.abs(h.factor - 1) > 0.001;
 		l = N(l, { left: c.left || 0, top: c.top || 0 });
-		var p = {
+		var g = {
 			stencil: {
 				minimum: Math.max(s.minWidth ? s.minWidth / u.width : 0, s.minHeight ? s.minHeight / u.height : 0),
 				maximum: Math.min(
 					s.maxWidth ? s.maxWidth / u.width : 1 / 0,
 					s.maxHeight ? s.maxHeight / u.height : 1 / 0,
-					q(u, r),
+					V(u, r),
 				),
 			},
-			area: { maximum: q(l, o({ visibleArea: l, type: 'resize' })) },
+			area: { maximum: V(l, o({ visibleArea: l, type: 'resize' })) },
 		};
 		h.factor &&
-			g &&
+			p &&
 			(h.factor < 1
-				? (f = Math.max(h.factor, p.stencil.minimum)) > 1 && (f = 1)
-				: h.factor > 1 && (f = Math.min(h.factor, Math.min(p.area.maximum, p.stencil.maximum))) < 1 && (f = 1)),
+				? (f = Math.max(h.factor, g.stencil.minimum)) > 1 && (f = 1)
+				: h.factor > 1 && (f = Math.min(h.factor, Math.min(g.area.maximum, g.stencil.maximum))) < 1 && (f = 1)),
 			f && (l = Z(l, f, h.center));
 		var v = i.left - n.left,
 			b = n.width + n.left - (i.width + i.left),
@@ -1054,17 +1052,17 @@
 			(u.height = u.height * f),
 			(u.left = l.left + v * f),
 			(u.top = l.top + w * f),
-			(u = it(u, rt(_(l), r))),
+			(u = it(u, rt(B(l), r))),
 			h.factor &&
-				g &&
+				p &&
 				a &&
 				(h.factor > 1
-					? (m = Math.min(p.area.maximum, h.factor) / f)
+					? (m = Math.min(g.area.maximum, h.factor) / f)
 					: h.factor < 1 && (m = Math.max(u.height / l.height, u.width / l.width, h.factor / f)),
 				1 !== m &&
 					(l = N(
 						(l = it((l = Z(l, m, h.factor > 1 ? h.center : X(u))), o({ visibleArea: l, type: 'move' }))),
-						U(G(u, _(l))),
+						U(G(u, B(l))),
 					))),
 			{ coordinates: u, visibleArea: l }
 		);
@@ -1111,14 +1109,14 @@
 		if (l || u) {
 			var m = tt({ left: a.width / 2, top: a.height / 2 }, -n),
 				f = tt(X(h), -n),
-				g = tt({ left: l ? m.left - (f.left - m.left) : f.left, top: u ? m.top - (f.top - m.top) : f.top }, n);
-			(h = N(h, F(g, X(h)))),
+				p = tt({ left: l ? m.left - (f.left - m.left) : f.left, top: u ? m.top - (f.top - m.top) : f.top }, n);
+			(h = N(h, F(p, X(h)))),
 				(f = tt(X(c), -n)),
 				(c = it(
 					(c = N(
 						c,
 						F(
-							(g = tt(
+							(p = tt(
 								{
 									left: l ? m.left - (f.left - m.left) : f.left,
 									top: u ? m.top - (f.top - m.top) : f.top,
@@ -1169,24 +1167,24 @@
 			(u = Y(k(i, h), s)));
 		var m = { width: 1 / 0, height: 1 / 0, left: 1 / 0, right: 1 / 0, top: 1 / 0, bottom: 1 / 0 };
 		if (
-			($.forEach(function (t) {
+			(H.forEach(function (t) {
 				var e = u[t];
 				e && h[t] && (m[t] = Math.max(0, 1 - e / h[t]));
 			}),
 			r)
 		) {
 			var f = Math.min.apply(
-				Math,
-				$.map(function (t) {
+				null,
+				H.map(function (t) {
 					return m[t];
 				}),
 			);
 			f !== 1 / 0 &&
-				$.forEach(function (t) {
+				H.forEach(function (t) {
 					h[t] *= f;
 				});
 		} else
-			$.forEach(function (t) {
+			H.forEach(function (t) {
 				m[t] !== 1 / 0 && (h[t] *= m[t]);
 			});
 		if (
@@ -1202,10 +1200,10 @@
 					: l < o.minHeight && (m.height = (o.minHeight - i.height) / (h.bottom + h.top))),
 			r)
 		) {
-			var g = Math.min(m.width, m.height);
-			g !== 1 / 0 &&
-				$.forEach(function (t) {
-					h[t] *= g;
+			var p = Math.min(m.width, m.height);
+			p !== 1 / 0 &&
+				H.forEach(function (t) {
+					h[t] *= p;
 				});
 		} else
 			m.width !== 1 / 0 &&
@@ -1213,7 +1211,7 @@
 					h[t] *= m.width;
 				}),
 				m.height !== 1 / 0 &&
-					D.forEach(function (t) {
+					P.forEach(function (t) {
 						h[t] *= m.height;
 					});
 		return h;
@@ -1325,7 +1323,7 @@
 			undefined,
 			{
 				name: 'SimpleLine',
-				components: { LineWrapper: H },
+				components: { LineWrapper: $ },
 				props: {
 					defaultClass: { type: String },
 					hoverClass: { type: String },
@@ -1370,7 +1368,7 @@
 		Wt = h('vue-bounding-box'),
 		Tt = ['east', 'west', null],
 		Ot = ['south', 'north', null],
-		Ht = C(
+		$t = C(
 			{
 				render: function () {
 					var t = this,
@@ -1676,7 +1674,7 @@
 			void 0,
 			void 0,
 		),
-		$t = h('vue-draggable-area'),
+		Ht = h('vue-draggable-area'),
 		jt = C(
 			{
 				render: function () {
@@ -1697,7 +1695,7 @@
 				props: { movable: { type: Boolean, default: !0 }, activationDistance: { type: Number, default: 20 } },
 				computed: {
 					classnames: function () {
-						return { default: $t() };
+						return { default: Ht() };
 					},
 				},
 				beforeMount: function () {
@@ -1788,6 +1786,16 @@
 			void 0,
 			void 0,
 		);
+	function Pt(t) {
+		var e, i;
+		return {
+			rotate: t.rotate || 0,
+			flip: {
+				horizontal: (null === (e = null == t ? void 0 : t.flip) || void 0 === e ? void 0 : e.horizontal) || !1,
+				vertical: (null === (i = null == t ? void 0 : t.flip) || void 0 === i ? void 0 : i.vertical) || !1,
+			},
+		};
+	}
 	function Dt(t) {
 		return new Promise(function (e, i) {
 			try {
@@ -1844,7 +1852,7 @@
 			var o, r, a;
 		});
 	}
-	function Pt(t) {
+	function Lt(t) {
 		var e = t.rotate,
 			i = t.flip,
 			n = t.scaleX,
@@ -1856,7 +1864,7 @@
 			(o += ' scaleY(' + s * (i.vertical ? -1 : 1) + ') ')
 		);
 	}
-	function Lt(t) {
+	function It(t) {
 		try {
 			var e,
 				i = new DataView(t),
@@ -1902,7 +1910,7 @@
 			return null;
 		}
 	}
-	var It = h('vue-preview-result'),
+	var _t = h('vue-preview-result'),
 		Bt = C(
 			{
 				render: function () {
@@ -1939,10 +1947,10 @@
 				computed: {
 					classes: function () {
 						return {
-							root: It(),
-							wrapper: It('wrapper'),
-							imageWrapper: It('image-wrapper'),
-							image: a(It('image'), this.imageClass),
+							root: _t(),
+							wrapper: _t('wrapper'),
+							imageWrapper: _t('image-wrapper'),
+							image: a(_t('image'), this.imageClass),
 						};
 					},
 					wrapperStyle: function () {
@@ -1983,7 +1991,7 @@
 								'translate(\n\t\t\t\t'
 									.concat(-this.stencilCoordinates.left - t.translateX - n.left - s.left, 'px,')
 									.concat(-this.stencilCoordinates.top - t.translateY - n.top - s.top, 'px) ') +
-								Pt(t)),
+								Lt(t)),
 							this.transitions &&
 								this.transitions.enabled &&
 								(i.transition = ''
@@ -2002,7 +2010,7 @@
 			void 0,
 			void 0,
 		);
-	function _t(t, e) {
+	function Ft(t, e) {
 		var i = e.getBoundingClientRect(),
 			n = i.left,
 			s = i.top,
@@ -2018,7 +2026,7 @@
 			{ centerMass: o, spread: r, count: t.length }
 		);
 	}
-	var Ft = C(
+	var Xt = C(
 			{
 				render: function () {
 					var t = this,
@@ -2037,12 +2045,12 @@
 			},
 			undefined,
 			{
-				name: 'CropperWrapper',
 				props: {
 					touchMove: { type: Boolean, required: !0 },
 					mouseMove: { type: Boolean, required: !0 },
 					touchResize: { type: Boolean, required: !0 },
 					wheelResize: { type: [Boolean, Object], required: !0 },
+					eventsFilter: { type: Function, required: !1 },
 				},
 				beforeMount: function () {
 					window.addEventListener('mouseup', this.onMouseUp, { passive: !1 }),
@@ -2056,59 +2064,10 @@
 						window.removeEventListener('touchmove', this.onTouchMove),
 						window.removeEventListener('touchend', this.onTouchEnd);
 				},
-				mounted: function () {
-					this.touches = [];
+				created: function () {
+					(this.transforming = !1), (this.debouncedProcessEnd = l(this.processEnd)), (this.touches = []);
 				},
 				methods: {
-					onTouchStart: function (t) {
-						if (t.cancelable && (this.touchMove || (this.touchResize && t.touches.length > 1))) {
-							var e = this.$refs.container,
-								i = e.getBoundingClientRect(),
-								n = i.left,
-								s = i.top,
-								r = i.bottom,
-								a = i.right;
-							(this.touches = o(t.touches).filter(function (t) {
-								return t.clientX > n && t.clientX < a && t.clientY > s && t.clientY < r;
-							})),
-								(this.oldGeometricProperties = _t(this.touches, e)),
-								t.preventDefault && t.preventDefault(),
-								t.stopPropagation();
-						}
-					},
-					onTouchEnd: function (t) {
-						0 === t.touches.length && this.processEnd();
-					},
-					onTouchMove: function (t) {
-						var e = this;
-						if (this.touches.length) {
-							var i = o(t.touches).filter(function (t) {
-								return (
-									!t.identifier ||
-									e.touches.find(function (e) {
-										return e.identifier === t.identifier;
-									})
-								);
-							});
-							this.processMove(t, i),
-								t.preventDefault && t.preventDefault(),
-								t.stopPropagation && t.stopPropagation();
-						}
-					},
-					onMouseDown: function (t) {
-						if (this.mouseMove && 'buttons' in t && 1 === t.buttons) {
-							var e = { fake: !0, clientX: t.clientX, clientY: t.clientY };
-							(this.touches = [e]), t.stopPropagation();
-						}
-					},
-					onMouseMove: function (t) {
-						this.touches.length &&
-							(this.processMove(t, [{ fake: !0, clientX: t.clientX, clientY: t.clientY }]),
-							t.preventDefault && t.cancelable && t.preventDefault());
-					},
-					onMouseUp: function () {
-						this.touches = [];
-					},
 					processMove: function (t, e) {
 						if (this.touches.length) {
 							if (1 === this.touches.length && 1 === e.length)
@@ -2120,7 +2079,7 @@
 									}),
 								);
 							else if (this.touches.length > 1 && this.touchResize) {
-								var i = _t(e, this.$refs.container),
+								var i = Ft(e, this.$refs.container),
 									n = this.oldGeometricProperties;
 								n.count === i.count &&
 									n.count > 1 &&
@@ -2140,10 +2099,67 @@
 						}
 					},
 					processEnd: function () {
-						this.touches = [];
+						this.transforming && ((this.transforming = !1), this.$emit('transform-end'));
+					},
+					processStart: function () {
+						(this.transforming = !0), this.debouncedProcessEnd.clear();
+					},
+					processEvent: function (t) {
+						return this.eventsFilter
+							? !1 !== this.eventsFilter(t, this.transforming)
+							: (t.preventDefault(), t.stopPropagation(), !0);
+					},
+					onTouchStart: function (t) {
+						if (
+							t.cancelable &&
+							(this.touchMove || (this.touchResize && t.touches.length > 1)) &&
+							this.processEvent(t)
+						) {
+							var e = this.$refs.container,
+								i = e.getBoundingClientRect(),
+								n = i.left,
+								s = i.top,
+								r = i.bottom,
+								a = i.right;
+							(this.touches = o(t.touches).filter(function (t) {
+								return t.clientX > n && t.clientX < a && t.clientY > s && t.clientY < r;
+							})),
+								(this.oldGeometricProperties = Ft(this.touches, e));
+						}
+					},
+					onTouchEnd: function (t) {
+						0 === t.touches.length && ((this.touches = []), this.processEnd());
+					},
+					onTouchMove: function (t) {
+						var e = this;
+						if (this.touches.length) {
+							var i = o(t.touches).filter(function (t) {
+								return (
+									!t.identifier ||
+									e.touches.find(function (e) {
+										return e.identifier === t.identifier;
+									})
+								);
+							});
+							this.processEvent(t) && (this.processMove(t, i), this.processStart());
+						}
+					},
+					onMouseDown: function (t) {
+						if (this.mouseMove && 'buttons' in t && 1 === t.buttons && this.processEvent(t)) {
+							var e = { fake: !0, clientX: t.clientX, clientY: t.clientY };
+							(this.touches = [e]), this.processStart();
+						}
+					},
+					onMouseMove: function (t) {
+						this.touches.length &&
+							this.processEvent(t) &&
+							this.processMove(t, [{ clientX: t.clientX, clientY: t.clientY }]);
+					},
+					onMouseUp: function () {
+						(this.touches = []), this.processEnd();
 					},
 					onWheel: function (t) {
-						if (this.wheelResize) {
+						if (this.wheelResize && this.processEvent(t)) {
 							var e = this.$refs.container.getBoundingClientRect(),
 								i = e.left,
 								n = e.top,
@@ -2154,8 +2170,7 @@
 										0 === (a = +r) || z(a) ? a : a > 0 ? 1 : -1),
 								o = { left: t.clientX - i, top: t.clientY - n };
 							this.$emit('resize', new A({}, { factor: s, center: o })),
-								t.preventDefault(),
-								t.stopPropagation();
+								this.touches.length || this.debouncedProcessEnd();
 						}
 						var r, a;
 					},
@@ -2169,8 +2184,55 @@
 			void 0,
 			void 0,
 		),
-		Xt = h('vue-preview'),
 		Yt = C(
+			{
+				render: function () {
+					var t = this,
+						e = t.$createElement;
+					return (t._self._c || e)(
+						'transformable-image',
+						{
+							attrs: {
+								'touch-move': t.touchMove,
+								'touch-resize': t.touchResize,
+								'mouse-move': t.mouseMove,
+								'wheel-resize': t.wheelResize,
+							},
+							on: {
+								move: function (e) {
+									return t.$emit('move', e);
+								},
+								resize: function (e) {
+									return t.$emit('resize', e);
+								},
+							},
+						},
+						[t._t('default')],
+						2,
+					);
+				},
+				staticRenderFns: [],
+			},
+			undefined,
+			{
+				components: { TransformableImage: Xt },
+				props: {
+					touchMove: { type: Boolean, required: !0 },
+					mouseMove: { type: Boolean, required: !0 },
+					touchResize: { type: Boolean, required: !0 },
+					wheelResize: { type: [Boolean, Object], required: !0 },
+				},
+			},
+			undefined,
+			false,
+			undefined,
+			!1,
+			void 0,
+			void 0,
+			void 0,
+		),
+		kt = h('vue-preview'),
+		Ut = C(
 			{
 				render: function () {
 					var t = this,
@@ -2219,10 +2281,10 @@
 				computed: {
 					classes: function () {
 						return {
-							root: Xt({ fill: this.fill }),
-							wrapper: Xt('wrapper'),
-							imageWrapper: Xt('image-wrapper'),
-							image: a(Xt('image'), this.imageClass),
+							root: kt({ fill: this.fill }),
+							wrapper: kt('wrapper'),
+							imageWrapper: kt('image-wrapper'),
+							image: a(kt('image'), this.imageClass),
 						};
 					},
 					style: function () {
@@ -2279,7 +2341,7 @@
 									'translate(\n\t\t\t\t'
 										.concat(-this.coordinates.left / t - a.rotate.left - a.scale.left, 'px,')
 										.concat(-this.coordinates.top / t - a.rotate.top - a.scale.top, 'px) ') +
-									Pt(e)),
+									Lt(e)),
 								this.transitions &&
 									this.transitions.enabled &&
 									(r.transition = ''
@@ -2346,7 +2408,7 @@
 			void 0,
 			void 0,
 		),
-		kt = C(
+		Nt = C(
 			{
 				render: function () {
 					var t = this,
@@ -2356,7 +2418,7 @@
 				staticRenderFns: [],
 			},
 			undefined,
-			{ components: { Preview: Yt }, inheritAttrs: !1 },
+			{ components: { Preview: Ut }, inheritAttrs: !1 },
 			undefined,
 			false,
 			undefined,
@@ -2365,8 +2427,8 @@
 			void 0,
 			void 0,
 		),
-		Ut = h('vue-rectangle-stencil'),
-		Nt = C(
+		Zt = h('vue-rectangle-stencil'),
+		qt = C(
 			{
 				render: function () {
 					var t = this,
@@ -2376,6 +2438,8 @@
 						'div',
 						{ class: t.classes.stencil, style: t.style },
 						[
+							t._t('default'),
+							t._v(' '),
 							i(
 								'bounding-box',
 								{
@@ -2421,7 +2485,7 @@
 								1,
 							),
 						],
-						1,
+						2,
 					);
 				},
 				staticRenderFns: [],
@@ -2429,7 +2493,7 @@
 			undefined,
 			{
 				name: 'RectangleStencil',
-				components: { StencilPreview: kt, BoundingBox: Ht, DraggableArea: jt },
+				components: { StencilPreview: Nt, BoundingBox: $t, DraggableArea: jt },
 				props: {
 					image: { type: Object },
 					coordinates: { type: Object },
@@ -2490,12 +2554,12 @@
 					classes: function () {
 						return {
 							stencil: a(
-								Ut({ movable: this.movable, moving: this.moving, resizing: this.resizing }),
+								Zt({ movable: this.movable, moving: this.moving, resizing: this.resizing }),
 								this.moving && this.movingClass,
 								this.resizing && this.resizingClass,
 							),
-							preview: a(Ut('preview'), this.previewClass),
-							boundingBox: a(Ut('bounding-box'), this.boundingBoxClass),
+							preview: a(Zt('preview'), this.previewClass),
+							boundingBox: a(Zt('bounding-box'), this.boundingBoxClass),
 						};
 					},
 					style: function () {
@@ -2548,8 +2612,8 @@
 			void 0,
 			void 0,
 		),
-		Zt = h('vue-circle-stencil'),
-		Vt = C(
+		Vt = h('vue-circle-stencil'),
+		Gt = C(
 			{
 				render: function () {
 					var t = this,
@@ -2559,6 +2623,8 @@
 						'div',
 						{ class: t.classes.stencil, style: t.style },
 						[
+							t._t('default'),
+							t._v(' '),
 							i(
 								'bounding-box',
 								{
@@ -2604,14 +2670,14 @@
 								1,
 							),
 						],
-						1,
+						2,
 					);
 				},
 				staticRenderFns: [],
 			},
 			undefined,
 			{
-				components: { StencilPreview: kt, BoundingBox: Ht, DraggableArea: jt },
+				components: { StencilPreview: Nt, BoundingBox: $t, DraggableArea: jt },
 				props: {
 					image: { type: Object },
 					coordinates: { type: Object },
@@ -2674,12 +2740,12 @@
 					classes: function () {
 						return {
 							stencil: a(
-								Zt({ movable: this.movable, moving: this.moving, resizing: this.resizing }),
+								Vt({ movable: this.movable, moving: this.moving, resizing: this.resizing }),
 								this.moving && this.movingClass,
 								this.resizing && this.resizingClass,
 							),
-							preview: a(Zt('preview'), this.previewClass),
-							boundingBox: a(Zt('bounding-box'), this.boundingBoxClass),
+							preview: a(Vt('preview'), this.previewClass),
+							boundingBox: a(Vt('bounding-box'), this.boundingBoxClass),
 						};
 					},
 					style: function () {
@@ -2729,9 +2795,9 @@
 			void 0,
 			void 0,
 		);
-	var qt = ['transitions'],
-		Gt = h('vue-advanced-cropper'),
-		Qt = C(
+	var Qt = ['transitions'],
+		Kt = h('vue-advanced-cropper'),
+		Jt = C(
 			{
 				render: function () {
 					var t = this,
@@ -2745,8 +2811,9 @@
 							{ class: t.classes.boundaries, style: t.boundariesStyle },
 							[
 								i(
-									'cropper-wrapper',
+									t.backgroundWrapperComponent,
 									{
+										tag: 'component',
 										class: t.classes.cropperWrapper,
 										attrs: {
 											'wheel-resize': t.settings.resizeImage.wheel,
@@ -2829,13 +2896,19 @@
 			undefined,
 			{
 				name: 'Cropper',
-				components: { CropperWrapper: Ft },
+				components: { BackgroundWrapper: Yt },
 				props: {
 					src: { type: String, default: null },
 					stencilComponent: {
 						type: [Object, String],
 						default: function () {
-							return Nt;
+							return qt;
+						},
+					},
+					backgroundWrapperComponent: {
+						type: [Object, String],
+						default: function () {
+							return Yt;
 						},
 					},
 					stencilProps: {
@@ -2887,13 +2960,13 @@
 							var e = t.getAreaRestrictions,
 								i = t.coordinates,
 								n = t.imageSize,
-								s = V(t.boundaries);
+								s = q(t.boundaries);
 							if (i) {
 								var o = { height: Math.max(i.height, n.height), width: Math.max(i.width, n.width) },
 									r = K(
 										{
-											width: V(o) > s ? o.width : o.height * s,
-											height: V(o) > s ? o.width / s : o.height,
+											width: q(o) > s ? o.width : o.height * s,
+											height: q(o) > s ? o.width / s : o.height,
 										},
 										nt(e()),
 									),
@@ -2903,7 +2976,7 @@
 										width: r.width,
 										height: r.height,
 									},
-									h = Y(i, _(d({ left: 0, top: 0 }, n))),
+									h = Y(i, B(d({ left: 0, top: 0 }, n))),
 									c = {};
 								return (
 									!h.left && !h.right && a.width <= n.width && ((c.left = 0), (c.right = n.width)),
@@ -2911,7 +2984,7 @@
 									it(a, c)
 								);
 							}
-							var l = V(n);
+							var l = q(n);
 							return (
 								(r = { height: l > s ? n.height : n.width / s, width: l > s ? n.height * s : n.width }),
 								{
@@ -2923,6 +2996,7 @@
 							);
 						},
 					},
+					defaultTransforms: { type: [Function, Object] },
 					defaultBoundaries: {
 						type: [Function, String],
 						validator: function (t) {
@@ -2948,7 +3022,7 @@
 								c = a.allowedDirections || { left: !0, right: !0, bottom: !0, top: !0 };
 							o.widthFrozen && ((h.left = 0), (h.right = 0)),
 								o.heightFrozen && ((h.top = 0), (h.bottom = 0)),
-								$.forEach(function (t) {
+								H.forEach(function (t) {
 									c[t] || (h[t] = 0);
 								});
 							var l = k(
@@ -2961,20 +3035,20 @@
 									})),
 								).width,
 								u = k(r, h).height,
-								m = a.preserveRatio ? V(r) : Q(l / u, n);
+								m = a.preserveRatio ? q(r) : Q(l / u, n);
 							if (m) {
 								var f = a.respectDirection;
 								if ((f || (f = r.width >= r.height || 1 === m ? 'width' : 'height'), 'width' === f)) {
-									var g = l / m - r.height;
+									var p = l / m - r.height;
 									if (c.top && c.bottom) {
-										var p = h.top,
+										var g = h.top,
 											v = h.bottom;
-										(h.bottom = Rt(g, v, p)), (h.top = Rt(g, p, v));
+										(h.bottom = Rt(p, v, g)), (h.top = Rt(p, g, v));
 									} else
 										c.bottom
-											? (h.bottom = g)
+											? (h.bottom = p)
 											: c.top
-											? (h.top = g)
+											? (h.top = p)
 											: c.right
 											? (h.right = 0)
 											: c.left && (h.left = 0);
@@ -3005,9 +3079,9 @@
 							return (
 								(l = k(r, h).width),
 								(u = k(r, h).height),
-								(m = a.preserveRatio ? V(r) : Q(l / u, n)) &&
+								(m = a.preserveRatio ? q(r) : Q(l / u, n)) &&
 									Math.abs(m - l / u) > 0.001 &&
-									$.forEach(function (t) {
+									H.forEach(function (t) {
 										c[t] || (h[t] = 0);
 									}),
 								lt({
@@ -3029,7 +3103,7 @@
 						default: function (t) {
 							var e = t.stretcher,
 								i = t.imageSize,
-								n = V(i);
+								n = q(i);
 							(e.style.width = i.width + 'px'),
 								(e.style.height = e.clientWidth / n + 'px'),
 								(e.style.width = e.clientWidth + 'px');
@@ -3057,7 +3131,7 @@
 										},
 									}),
 								);
-							return (r = it((r = N(r, F(X(i), X(r)))), rt(_(e), o)));
+							return (r = it((r = N(r, F(X(i), X(r)))), rt(B(e), o)));
 						},
 					},
 					fitVisibleArea: {
@@ -3068,11 +3142,11 @@
 								n = t.getAreaRestrictions,
 								s = t.coordinates,
 								o = d({}, e);
-							(o.height = o.width / V(i)),
+							(o.height = o.width / q(i)),
 								(o.top += (e.height - o.height) / 2),
 								(s.height - o.height > 0 || s.width - o.width > 0) &&
 									(o = Z(o, Math.max(s.height / o.height, s.width / o.width)));
-							var r = U(G(s, _((o = Z(o, et(o, n({ visibleArea: o, type: 'resize' })))))));
+							var r = U(G(s, B((o = Z(o, et(o, n({ visibleArea: o, type: 'resize' })))))));
 							return (
 								o.width < s.width && (r.left = 0),
 								o.height < s.height && (r.top = 0),
@@ -3093,7 +3167,7 @@
 								'fill-area' === s
 									? (r = { left: 0, top: 0, right: n.width, bottom: n.height })
 									: 'fit-area' === s &&
-									  (V(i) > V(n)
+									  (q(i) > q(n)
 											? ((r = { top: 0, bottom: n.height }),
 											  e &&
 													'move' === o &&
@@ -3135,20 +3209,14 @@
 							);
 						},
 					},
-					maxCanvasSize: {
-						type: Number,
-						validator: function (t) {
-							return p(t), !0;
-						},
-					},
 				},
 				data: function () {
 					return {
 						transitionsActive: !1,
 						imageLoaded: !1,
 						imageAttributes: { width: null, height: null, crossOrigin: !1, src: null },
-						customImageTransforms: { rotate: 0, flip: { horizontal: !1, vertical: !1 } },
-						basicImageTransforms: { rotate: 0, flip: { horizontal: !1, vertical: !1 } },
+						defaultImageTransforms: { rotate: 0, flip: { horizontal: !1, vertical: !1 } },
+						appliedImageTransforms: { rotate: 0, flip: { horizontal: !1, vertical: !1 } },
 						boundaries: { width: 0, height: 0 },
 						visibleArea: null,
 						coordinates: i({}, I),
@@ -3165,15 +3233,10 @@
 					},
 					imageTransforms: function () {
 						return {
-							rotate: this.basicImageTransforms.rotate + this.customImageTransforms.rotate,
+							rotate: this.appliedImageTransforms.rotate,
 							flip: {
-								horizontal: Boolean(
-									this.basicImageTransforms.flip.horizontal ^
-										this.customImageTransforms.flip.horizontal,
-								),
-								vertical: Boolean(
-									this.basicImageTransforms.flip.vertical ^ this.customImageTransforms.flip.vertical,
-								),
+								horizontal: this.appliedImageTransforms.flip.horizontal,
+								vertical: this.appliedImageTransforms.flip.vertical,
 							},
 							translateX: this.visibleArea ? this.visibleArea.left / this.coefficient : 0,
 							translateY: this.visibleArea ? this.visibleArea.top / this.coefficient : 0,
@@ -3232,10 +3295,10 @@
 						) {
 							var t = this.sizeRestrictionsAlgorithm({
 								imageSize: this.imageSize,
-								minWidth: p(this.minWidth) ? 0 : w(this.minWidth),
-								minHeight: p(this.minHeight) ? 0 : w(this.minHeight),
-								maxWidth: p(this.maxWidth) ? 1 / 0 : w(this.maxWidth),
-								maxHeight: p(this.maxHeight) ? 1 / 0 : w(this.maxHeight),
+								minWidth: g(this.minWidth) ? 0 : w(this.minWidth),
+								minHeight: g(this.minHeight) ? 0 : w(this.minHeight),
+								maxWidth: g(this.maxWidth) ? 1 / 0 : w(this.maxWidth),
+								maxHeight: g(this.maxHeight) ? 1 / 0 : w(this.maxHeight),
 							});
 							if (
 								((t = (function (t) {
@@ -3308,15 +3371,15 @@
 					},
 					classes: function () {
 						return {
-							cropper: Gt(),
-							image: a(Gt('image'), this.imageClass),
-							stencil: Gt('stencil'),
-							boundaries: a(Gt('boundaries'), this.boundariesClass),
-							stretcher: a(Gt('stretcher')),
-							background: a(Gt('background'), this.backgroundClass),
-							foreground: a(Gt('foreground'), this.foregroundClass),
-							imageWrapper: a(Gt('image-wrapper')),
-							cropperWrapper: a(Gt('cropper-wrapper')),
+							cropper: Kt(),
+							image: a(Kt('image'), this.imageClass),
+							stencil: Kt('stencil'),
+							boundaries: a(Kt('boundaries'), this.boundariesClass),
+							stretcher: a(Kt('stretcher')),
+							background: a(Kt('background'), this.backgroundClass),
+							foreground: a(Kt('foreground'), this.foregroundClass),
+							imageWrapper: a(Kt('image-wrapper')),
+							cropperWrapper: a(Kt('cropper-wrapper')),
 						};
 					},
 					stencilCoordinates: function () {
@@ -3385,7 +3448,7 @@
 								transform:
 									'translate('
 										.concat(-e.left - n.left - this.imageTransforms.translateX, 'px, ')
-										.concat(-e.top - n.top - this.imageTransforms.translateY, 'px)') + Pt(s),
+										.concat(-e.top - n.top - this.imageTransforms.translateY, 'px)') + Lt(s),
 							};
 						return (
 							this.transitionsOptions.enabled &&
@@ -3578,13 +3641,13 @@
 							sizeRestrictions: this.sizeRestrictions,
 							stencilSize: this.getStencilSize(),
 						});
-						return i(i({}, r), {}, { changed: !B(r.visibleArea, e) || !B(r.coordinates, n) });
+						return i(i({}, r), {}, { changed: !_(r.visibleArea, e) || !_(r.coordinates, n) });
 					},
 					runAutoZoom: function (t) {
 						var e = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
 							i = e.transitions,
 							n = void 0 !== i && i,
-							o = s(e, qt),
+							o = s(e, Qt),
 							r = this.processAutoZoom(t, this.visibleArea, this.coordinates, o),
 							a = r.visibleArea,
 							h = r.coordinates,
@@ -3619,7 +3682,7 @@
 							if ('resize' === e.type) {
 								var s = d(d({}, e), { directions: d({}, e.directions) });
 								return (
-									$.forEach(function (t) {
+									H.forEach(function (t) {
 										s.directions[t] *= n;
 									}),
 									s
@@ -3628,7 +3691,7 @@
 							if ('move' === e.type) {
 								var o = d(d({}, e), { directions: d({}, e.directions) });
 								return (
-									P.forEach(function (t) {
+									D.forEach(function (t) {
 										o.directions[t] *= n;
 									}),
 									o
@@ -3749,11 +3812,11 @@
 						if (this.$refs.image) {
 							this.$refs.cropper, this.$refs.image;
 							var e = this.defaultSize;
-							e || (e = this.stencilSize ? pt : gt);
+							e || (e = this.stencilSize ? gt : pt);
 							var n = this.sizeRestrictions;
 							n.minWidth, n.minHeight, n.maxWidth, n.maxHeight;
 							var s = [
-								g(e)
+								p(e)
 									? e({
 											boundaries: this.boundaries,
 											imageSize: this.imageSize,
@@ -3767,7 +3830,7 @@
 									var n = e.coordinates;
 									return i(
 										{},
-										g(t.defaultPosition)
+										p(t.defaultPosition)
 											? t.defaultPosition({
 													coordinates: n,
 													imageSize: t.imageSize,
@@ -3815,7 +3878,7 @@
 							this.$nextTick().then(function () {
 								var e = { cropper: i, imageSize: t.imageSize };
 								if (
-									(g(t.defaultBoundaries)
+									(p(t.defaultBoundaries)
 										? (t.boundaries = t.defaultBoundaries(e))
 										: 'fit' === t.defaultBoundaries
 										? (t.boundaries = (function (t) {
@@ -3842,46 +3905,53 @@
 					},
 					resetVisibleArea: function () {
 						var t = this;
-						return this.updateBoundaries()
-							.then(function () {
-								var e, i, n, s, o, r;
-								'visible-area' !== t.priority && ((t.visibleArea = null), t.resetCoordinates()),
-									(t.visibleArea = g(t.defaultVisibleArea)
-										? t.defaultVisibleArea({
-												imageSize: t.imageSize,
-												boundaries: t.boundaries,
-												coordinates: 'visible-area' !== t.priority ? t.coordinates : null,
-												getAreaRestrictions: t.getAreaRestrictions,
-												stencilSize: t.getStencilSize(),
-										  })
-										: t.defaultVisibleArea),
-									(t.visibleArea =
-										((e = {
-											visibleArea: t.visibleArea,
-											boundaries: t.boundaries,
-											getAreaRestrictions: t.getAreaRestrictions,
-										}),
-										(i = e.visibleArea),
-										(n = e.boundaries),
-										(s = e.getAreaRestrictions),
-										(o = d({}, i)),
-										(r = V(n)),
-										o.width / o.height !== r && (o.height = o.width / r),
-										it(o, s({ visibleArea: o, type: 'move' })))),
-									'visible-area' === t.priority
-										? t.resetCoordinates()
-										: (t.coordinates = t.fitCoordinates({
+						return (
+							(this.appliedImageTransforms = i(
+								i({}, this.defaultImageTransforms),
+								{},
+								{ flip: i({}, this.defaultImageTransforms.flip) },
+							)),
+							this.updateBoundaries()
+								.then(function () {
+									var e, i, n, s, o, r;
+									'visible-area' !== t.priority && ((t.visibleArea = null), t.resetCoordinates()),
+										(t.visibleArea = p(t.defaultVisibleArea)
+											? t.defaultVisibleArea({
+													imageSize: t.imageSize,
+													boundaries: t.boundaries,
+													coordinates: 'visible-area' !== t.priority ? t.coordinates : null,
+													getAreaRestrictions: t.getAreaRestrictions,
+													stencilSize: t.getStencilSize(),
+											  })
+											: t.defaultVisibleArea),
+										(t.visibleArea =
+											((e = {
 												visibleArea: t.visibleArea,
-												coordinates: t.coordinates,
-												aspectRatio: t.getAspectRatio(),
-												positionRestrictions: t.positionRestrictions,
-												sizeRestrictions: t.sizeRestrictions,
-										  })),
-									t.runAutoZoom('resetVisibleArea');
-							})
-							.catch(function () {
-								t.visibleArea = null;
-							});
+												boundaries: t.boundaries,
+												getAreaRestrictions: t.getAreaRestrictions,
+											}),
+											(i = e.visibleArea),
+											(n = e.boundaries),
+											(s = e.getAreaRestrictions),
+											(o = d({}, i)),
+											(r = q(n)),
+											o.width / o.height !== r && (o.height = o.width / r),
+											it(o, s({ visibleArea: o, type: 'move' })))),
+										'visible-area' === t.priority
+											? t.resetCoordinates()
+											: (t.coordinates = t.fitCoordinates({
+													visibleArea: t.visibleArea,
+													coordinates: t.coordinates,
+													aspectRatio: t.getAspectRatio(),
+													positionRestrictions: t.positionRestrictions,
+													sizeRestrictions: t.sizeRestrictions,
+											  })),
+										t.runAutoZoom('resetVisibleArea');
+								})
+								.catch(function () {
+									t.visibleArea = null;
+								})
+						);
 					},
 					updateVisibleArea: function () {
 						var t = this;
@@ -3939,7 +4009,7 @@
 									);
 								})(this.src)
 							) {
-								var i = p(this.crossOrigin) ? this.canvas : this.crossOrigin;
+								var i = g(this.crossOrigin) ? this.canvas : this.crossOrigin;
 								!0 === i && (i = 'anonymous'), (this.imageAttributes.crossOrigin = i);
 							}
 							if (this.checkOrientation) {
@@ -3948,7 +4018,7 @@
 									new Promise(function (e) {
 										Dt(t)
 											.then(function (i) {
-												var n = Lt(i);
+												var n = It(i);
 												e(
 													i
 														? { source: t, arrayBuffer: i, orientation: n }
@@ -3992,8 +4062,8 @@
 							this.imageAttributes.src &&
 							URL.revokeObjectURL(this.imageAttributes.src),
 							(this.imageAttributes.revoke = !1),
-							s && o && o > 1 && f(n)
-								? m(n)
+							s && o && o > 1
+								? m(n) || !f(n)
 									? ((this.imageAttributes.src = URL.createObjectURL(new Blob([s]))),
 									  (this.imageAttributes.revoke = !0))
 									: (this.imageAttributes.src = (function (t) {
@@ -4010,36 +4080,41 @@
 											return 'data:image/jpeg;base64,' + btoa(e.join(''));
 									  })(s))
 								: (this.imageAttributes.src = n),
-							(this.customImageTransforms = { rotate: 0, flip: { horizontal: !1, vertical: !1 } }),
-							(this.basicImageTransforms = i(
-								i({}, this.customImageTransforms),
-								(function (t) {
-									var e = { flip: { horizontal: !1, vertical: !1 }, rotate: 0 };
-									if (t)
-										switch (t) {
-											case 2:
-												e.flip.horizontal = !0;
-												break;
-											case 3:
-												e.rotate = -180;
-												break;
-											case 4:
-												e.flip.vertical = !0;
-												break;
-											case 5:
-												(e.rotate = 90), (e.flip.vertical = !0);
-												break;
-											case 6:
-												e.rotate = 90;
-												break;
-											case 7:
-												(e.rotate = 90), (e.flip.horizontal = !0);
-												break;
-											case 8:
-												e.rotate = -90;
-										}
-									return e;
-								})(o),
+							p(this.defaultTransforms)
+								? (this.appliedImageTransforms = Pt(this.defaultTransforms()))
+								: v(this.defaultTransforms)
+								? (this.appliedImageTransforms = Pt(this.defaultTransforms))
+								: (this.appliedImageTransforms = (function (t) {
+										var e = Pt({});
+										if (t)
+											switch (t) {
+												case 2:
+													e.flip.horizontal = !0;
+													break;
+												case 3:
+													e.rotate = -180;
+													break;
+												case 4:
+													e.flip.vertical = !0;
+													break;
+												case 5:
+													(e.rotate = 90), (e.flip.vertical = !0);
+													break;
+												case 6:
+													e.rotate = 90;
+													break;
+												case 7:
+													(e.rotate = 90), (e.flip.horizontal = !0);
+													break;
+												case 8:
+													e.rotate = -90;
+											}
+										return e;
+								  })(o)),
+							(this.defaultImageTransforms = i(
+								i({}, this.appliedImageTransforms),
+								{},
+								{ flip: i({}, this.appliedImageTransforms.flip) },
 							)),
 							this.$nextTick(function () {
 								var t = e.$refs.image;
@@ -4159,10 +4234,10 @@
 							var a = this.$refs.stencil.aspectRatios();
 							(e = a.minimum), (i = a.maximum);
 						}
-						if ((p(e) && (e = p(s) ? o : s), p(i) && (i = p(s) ? r : s), !t && (p(e) || p(i)))) {
+						if ((g(e) && (e = g(s) ? o : s), g(i) && (i = g(s) ? r : s), !t && (g(e) || g(i)))) {
 							var h = this.getStencilSize(),
-								c = h ? V(h) : null;
-							p(e) && (e = y(c) ? c : void 0), p(i) && (i = y(c) ? c : void 0);
+								c = h ? q(h) : null;
+							g(e) && (e = y(c) ? c : void 0), g(i) && (i = y(c) ? c : void 0);
 						}
 						return { minimum: e, maximum: i };
 					},
@@ -4183,7 +4258,7 @@
 								(e = t.boundaries),
 								(i = t.stencilSize),
 								(n = t.aspectRatio),
-								Q(V((s = g(i) ? i({ boundaries: e, aspectRatio: n }) : i)), n) &&
+								Q(q((s = p(i) ? i({ boundaries: e, aspectRatio: n }) : i)), n) &&
 									(s = ct({
 										sizeRestrictions: {
 											maxWidth: e.width,
@@ -4205,7 +4280,7 @@
 										},
 										width: s.width,
 										height: s.height,
-										aspectRatio: { minimum: V(s), maximum: V(s) },
+										aspectRatio: { minimum: q(s), maximum: q(s) },
 									})),
 								s
 							);
@@ -4251,11 +4326,11 @@
 								h = a.visibleArea,
 								c = a.coordinates;
 							t &&
-								(this.customImageTransforms.flip.horizontal =
-									!this.customImageTransforms.flip.horizontal),
+								(this.appliedImageTransforms.flip.horizontal =
+									!this.appliedImageTransforms.flip.horizontal),
 								e &&
-									(this.customImageTransforms.flip.vertical =
-										!this.customImageTransforms.flip.vertical),
+									(this.appliedImageTransforms.flip.vertical =
+										!this.appliedImageTransforms.flip.vertical),
 								(this.visibleArea = h),
 								(this.coordinates = c),
 								this.onChange(),
@@ -4269,7 +4344,7 @@
 						if (!this.transitionsActive) {
 							s && this.enableTransitions();
 							var o = i({}, this.imageSize);
-							this.customImageTransforms.rotate += t;
+							this.appliedImageTransforms.rotate += t;
 							var r = wt({
 									visibleArea: this.visibleArea,
 									coordinates: this.coordinates,
@@ -4302,21 +4377,23 @@
 			void 0,
 			void 0,
 		);
-	(t.BoundingBox = Ht),
-		(t.CircleStencil = Vt),
-		(t.Cropper = Qt),
+	(t.BackgroundWrapper = Yt),
+		(t.BoundingBox = $t),
+		(t.CircleStencil = Gt),
+		(t.Cropper = Jt),
 		(t.DragEvent = M),
 		(t.DraggableArea = jt),
 		(t.DraggableElement = E),
 		(t.HandlerWrapper = T),
-		(t.LineWrapper = H),
+		(t.LineWrapper = $),
 		(t.MoveEvent = S),
-		(t.Preview = Yt),
+		(t.Preview = Ut),
 		(t.PreviewResult = Bt),
-		(t.RectangleStencil = Nt),
+		(t.RectangleStencil = qt),
 		(t.ResizeEvent = x),
 		(t.SimpleHandler = St),
 		(t.SimpleLine = Et),
-		(t.StencilPreview = kt),
+		(t.StencilPreview = Nt),
+		(t.TransformableImage = Xt),
 		Object.defineProperty(t, '__esModule', { value: !0 });
 });
